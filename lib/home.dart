@@ -11,10 +11,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover, image: AssetImage('image1.jpg'))),
+        body: GridView.builder(
+      child: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover, image: AssetImage('image1.jpg'))),
+      ),
     ));
   }
 }
