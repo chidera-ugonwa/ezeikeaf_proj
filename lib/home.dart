@@ -11,13 +11,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1,
-          ),
-          itemBuilder: (context, index) {
-            return Image.asset('image1.jpg');
-          }),
-    );
+        body: Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover, image: AssetImage('image1.jpg'))),
+    ));
   }
 }
