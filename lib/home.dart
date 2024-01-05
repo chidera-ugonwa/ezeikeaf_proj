@@ -31,28 +31,50 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 footer: const Text('Title'),
-                child: Stack(children: [
-                  CarouselSlider.builder(
-                    options: CarouselOptions(
-                      onPageChanged: (val, _) {
-                        setState(() {
-                          activePage = val;
-                        });
+                child: Stack(fit: StackFit.expand, children: [
+                  Positioned(
+                    child: CarouselSlider.builder(
+                      options: CarouselOptions(
+                        onPageChanged: (val, _) {
+                          setState(() {
+                            activePage = val;
+                          });
+                        },
+                        aspectRatio: 1,
+                        viewportFraction: 1,
+                        enableInfiniteScroll: true,
+                      ),
+                      itemCount: 5,
+                      itemBuilder: (context, itemIndex, realIndex) {
+                        return Container(
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('image1.jpg'))),
+                        );
                       },
-                      aspectRatio: 1,
-                      viewportFraction: 1,
-                      enableInfiniteScroll: true,
                     ),
-                    itemCount: 5,
-                    itemBuilder: (context, itemIndex, realIndex) {
-                      return Container(
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage('image1.jpg'))),
-                      );
-                    },
                   ),
+                  Positioned(
+                      top: 200,
+                      bottom: 200,
+                      right: 200,
+                      left: 200,
+                      child: Center(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text('Title of the Project',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 24)),
+                          const Text('Location of the Project',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18)),
+                          OutlinedButton(
+                              onPressed: () {}, child: const Text('Learn More'))
+                        ],
+                      )))
                 ]),
               );
             }));
