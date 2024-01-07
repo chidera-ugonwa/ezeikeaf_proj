@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +11,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int activePage = 0;
+
+  Future getListings() async {
+    final db = FirebaseFirestore.instance;
+    final projects = db.collection('projects');
+    var check = projects
+        .where('year', isEqualTo: '2023')
+        .where("status", isEqualTo: 'active')
+        .snapshots();
+    Future<bool> checks = check.isEmpty;
+    debugPrint(checks.toString());
+  }
+
+  @override
+  void initState() {
+    getListings();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
