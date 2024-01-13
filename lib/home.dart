@@ -15,12 +15,7 @@ class _HomeState extends State<Home> {
   Stream<QuerySnapshot> getListings() {
     final db = FirebaseFirestore.instance;
     final projects = db.collection('projects');
-    return projects
-        // .where('year', isEqualTo: '2023')
-        //.where("status", isEqualTo: 'active')
-        .snapshots();
-    //var checks = await check.isEmpty;
-    // debugPrint(checks.toString());
+    return projects.snapshots();
   }
 
   @override
@@ -51,11 +46,14 @@ Widget _buildGridItem(DocumentSnapshot document) {
   return GridTile(
     header: const Padding(
       padding: EdgeInsets.all(20.0),
-      child: Text(
-        'ezikeaf',
-        style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
-      ),
+      child: Stack(children: [
+        Text(
+          'ezikeaf',
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
+        ),
+        Positioned(right: 50, child: Icon(Icons.filter))
+      ]),
     ),
     child: Stack(fit: StackFit.expand, children: [
       Positioned(
@@ -70,14 +68,14 @@ Widget _buildGridItem(DocumentSnapshot document) {
             viewportFraction: 1,
             enableInfiniteScroll: true,
           ),
-          itemCount: 5,
+          itemCount: data['photoLink'].length,
           itemBuilder: (context, itemIndex, realIndex) {
             return Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(
-                        data['photoLink'],
+                        data['photoLink'][itemIndex],
                       ))),
             );
           },
