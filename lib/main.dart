@@ -25,9 +25,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ezikeaf',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+          primaryColor: Colors.black,
+          useMaterial3: true,
+          checkboxTheme: CheckboxThemeData(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25))),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+              style: OutlinedButton.styleFrom(foregroundColor: Colors.black))),
       home: const Home(),
     );
   }
