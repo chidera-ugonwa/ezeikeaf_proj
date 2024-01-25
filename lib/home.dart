@@ -111,8 +111,22 @@ Widget _buildGridItem(DocumentSnapshot document, BuildContext context) {
   );
 }
 
-class DumyModal extends StatelessWidget {
+class DumyModal extends StatefulWidget {
   const DumyModal({super.key});
+
+  @override
+  State<DumyModal> createState() => _DumyModalState();
+}
+
+class _DumyModalState extends State<DumyModal> {
+  bool selected = false;
+  bool selected2 = false;
+  bool selected3 = false;
+  bool selected4 = false;
+  bool selected5 = false;
+  bool selected6 = false;
+  bool selected7 = false;
+  bool selected8 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -133,16 +147,36 @@ class DumyModal extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  OutlinedButton(child: const Text('Modern'), onPressed: () {}),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  OutlinedButton(child: const Text('Old'), onPressed: () {}),
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              selected ? Colors.grey : Colors.white),
+                      child: const Text('Modern'),
+                      onPressed: () {
+                        setState(() => selected = !selected);
+                      }),
                   const SizedBox(
                     height: 20,
                   ),
                   OutlinedButton(
-                      child: const Text('Community Service'), onPressed: () {})
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              selected2 ? Colors.grey : Colors.white),
+                      child: const Text('Old'),
+                      onPressed: () {
+                        setState(() => selected2 = !selected2);
+                      }),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              selected3 ? Colors.grey : Colors.white),
+                      child: const Text('Community Service'),
+                      onPressed: () {
+                        setState(() => selected3 = !selected3);
+                      })
                 ]),
                 const SizedBox(
                   width: 250,
@@ -156,20 +190,37 @@ class DumyModal extends StatelessWidget {
                       height: 20,
                     ),
                     OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              selected4 ? Colors.grey : Colors.white),
                       child: const Text('2021'),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() => selected4 = !selected4);
+                      },
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              selected5 ? Colors.grey : Colors.white),
                       child: const Text('2022'),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() => selected5 = !selected5);
+                      },
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    OutlinedButton(child: const Text('2023'), onPressed: () {}),
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            backgroundColor:
+                                selected6 ? Colors.grey : Colors.white),
+                        child: const Text('2023'),
+                        onPressed: () {
+                          setState(() => selected6 = !selected6);
+                        }),
                   ],
                 ),
                 const SizedBox(
@@ -182,21 +233,34 @@ class DumyModal extends StatelessWidget {
                     height: 20,
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor:
+                            selected7 ? Colors.grey : Colors.white),
+                    onPressed: () {
+                      setState(() => selected7 = !selected7);
+                    },
                     child: const Text('Active'),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   OutlinedButton(
-                      onPressed: () {}, child: const Text('Inactive')),
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              selected8 ? Colors.grey : Colors.white),
+                      onPressed: () {
+                        setState(() => selected8 = !selected8);
+                      },
+                      child: const Text('Inactive')),
                 ]),
                 const SizedBox(
-                  width: 250,
+                  width: 200,
                 ),
                 IconButton(
                   icon: const Icon(Icons.search),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 )
               ],
             )
