@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:ezeikeaf_proj/top_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,13 +14,82 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int activePage = 0;
+  bool isFiltered = false;
+  List projectTypology = [];
+  List status = [];
+  List year = [];
 
   Stream<QuerySnapshot> getListings() {
-    setState(() {});
-    final db = FirebaseFirestore.instance;
-    final projects = db.collection('projects');
-    //   .where('project typology', arrayContainsAny: ['2021', '2022']);
-    return projects.snapshots();
+    if (!isFiltered) {
+      setState(() {});
+      final db = FirebaseFirestore.instance;
+      final projects = db.collection('projects');
+
+      return projects.snapshots();
+    } else {
+      if (projectTypology.isNotEmpty && status.isNotEmpty && year.isNotEmpty) {
+        // setState(() {});
+        final db = FirebaseFirestore.instance;
+        final projects = db
+            .collection('projects')
+            .where(
+              'project typology',
+              arrayContainsAny: projectTypology,
+            )
+            .where('status', arrayContainsAny: status)
+            .where('year', arrayContainsAny: year);
+        debugPrint(projectTypology.toString());
+        return projects.snapshots();
+      }
+      if (projectTypology.isNotEmpty && status.isNotEmpty) {
+        final db = FirebaseFirestore.instance;
+        final projects = db
+            .collection('projects')
+            .where('project typology', arrayContainsAny: projectTypology)
+            .where('status', arrayContainsAny: status);
+
+        return projects.snapshots();
+      }
+      if (projectTypology.isNotEmpty && year.isNotEmpty) {
+        final db = FirebaseFirestore.instance;
+        final projects = db
+            .collection('projects')
+            .where('project typology', arrayContainsAny: projectTypology)
+            .where('year', arrayContainsAny: year);
+
+        return projects.snapshots();
+      }
+      if (status.isNotEmpty && year.isNotEmpty) {
+        final db = FirebaseFirestore.instance;
+        final projects = db
+            .collection('projects')
+            .where('status', arrayContainsAny: status)
+            .where('year', arrayContainsAny: year);
+
+        return projects.snapshots();
+      }
+      if (projectTypology.isNotEmpty) {
+        final db = FirebaseFirestore.instance;
+        final projects = db
+            .collection('projects')
+            .where('project typology', arrayContainsAny: projectTypology);
+        return projects.snapshots();
+      }
+      if (status.isNotEmpty) {
+        final db = FirebaseFirestore.instance;
+        final projects =
+            db.collection('projects').where('status', arrayContainsAny: status);
+
+        return projects.snapshots();
+      }
+      {
+        final db = FirebaseFirestore.instance;
+        final projects =
+            db.collection('projects').where('year', arrayContainsAny: year);
+
+        return projects.snapshots();
+      }
+    }
   }
 
   @override
@@ -34,79 +104,84 @@ class _HomeState extends State<Home> {
               if (!snapshot.hasData) {
                 return const Center(child: Text('Loading...'));
               }
+              var docs = snapshot.data!.docs;
 
               return GridView(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1, childAspectRatio: 1.75),
-                  children: snapshot.data!.docs
-                      .map((document) => _buildGridItem(document, context))
+                  children: docs
+                      .map((doc) => GridTile(
+                            header: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Stack(children: [
+                                const Text(
+                                  'ezikeaf',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
+                                ),
+                                Positioned(
+                                    right: 10,
+                                    child: IconButton(
+                                        icon: const Icon(Icons.menu),
+                                        color: Colors.white,
+                                        onPressed: () async {
+                                          var value =
+                                              await showTopModalSheet<Map?>(
+                                                  context, const TopModal());
+                                          debugPrint(value.toString());
+                                        }))
+                              ]),
+                            ),
+                            child: Stack(fit: StackFit.expand, children: [
+                              Positioned(
+                                child: CarouselSlider.builder(
+                                  options: CarouselOptions(
+                                    aspectRatio: 1,
+                                    viewportFraction: 1,
+                                    enableInfiniteScroll: true,
+                                  ),
+                                  itemCount: doc['photoLink'].length,
+                                  itemBuilder: (context, itemIndex, realIndex) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                doc['photoLink'][itemIndex],
+                                              ))),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Positioned(
+                                  top: 200,
+                                  bottom: 200,
+                                  right: 200,
+                                  left: 200,
+                                  child: Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(doc['title'],
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24)),
+                                      Text(doc['location'],
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18)),
+                                      OutlinedButton(
+                                          onPressed: () {},
+                                          child: const Text('Learn More'))
+                                    ],
+                                  )))
+                            ]),
+                          ))
                       .toList());
             }));
   }
-}
-
-Widget _buildGridItem(DocumentSnapshot document, BuildContext context) {
-  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
-  return GridTile(
-    header: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Stack(children: [
-        const Text(
-          'ezikeaf',
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
-        ),
-        Positioned(
-            right: 10,
-            child: IconButton(
-                icon: const Icon(Icons.menu),
-                color: Colors.white,
-                onPressed: () async {
-                  var value =
-                      await showTopModalSheet<Map?>(context, const TopModal());
-                  debugPrint(value.toString());
-                }))
-      ]),
-    ),
-    child: Stack(fit: StackFit.expand, children: [
-      Positioned(
-        child: CarouselSlider.builder(
-          options: CarouselOptions(
-            aspectRatio: 1,
-            viewportFraction: 1,
-            enableInfiniteScroll: true,
-          ),
-          itemCount: data['photoLink'].length,
-          itemBuilder: (context, itemIndex, realIndex) {
-            return Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        data['photoLink'][itemIndex],
-                      ))),
-            );
-          },
-        ),
-      ),
-      Positioned(
-          top: 200,
-          bottom: 200,
-          right: 200,
-          left: 200,
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(data['title'],
-                  style: const TextStyle(color: Colors.white, fontSize: 24)),
-              Text(data['location'],
-                  style: const TextStyle(color: Colors.white, fontSize: 18)),
-              OutlinedButton(onPressed: () {}, child: const Text('Learn More'))
-            ],
-          )))
-    ]),
-  );
 }
