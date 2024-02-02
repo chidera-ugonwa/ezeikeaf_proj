@@ -104,29 +104,11 @@ class _TopModalState extends State<TopModal> {
                       style: OutlinedButton.styleFrom(
                           backgroundColor:
                               selected4 ? Colors.grey : Colors.white),
-                      child: const Text('2021'),
+                      child: const Text('2022'),
                       onPressed: () {
                         setState(() => selected4 = !selected4);
 
                         if (selected4) {
-                          year.add('2021');
-                        } else {
-                          year.remove('2021');
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              selected5 ? Colors.grey : Colors.white),
-                      child: const Text('2022'),
-                      onPressed: () {
-                        setState(() => selected5 = !selected5);
-
-                        if (selected5) {
                           year.add('2022');
                         } else {
                           year.remove('2022');
@@ -137,17 +119,35 @@ class _TopModalState extends State<TopModal> {
                       height: 20,
                     ),
                     OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              selected5 ? Colors.grey : Colors.white),
+                      child: const Text('2023'),
+                      onPressed: () {
+                        setState(() => selected5 = !selected5);
+
+                        if (selected5) {
+                          year.add('2023');
+                        } else {
+                          year.remove('2023');
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    OutlinedButton(
                         style: OutlinedButton.styleFrom(
                             backgroundColor:
                                 selected6 ? Colors.grey : Colors.white),
-                        child: const Text('2023'),
+                        child: const Text('2024'),
                         onPressed: () {
                           setState(() => selected6 = !selected6);
 
                           if (selected6) {
-                            year.add('2023');
+                            year.add('2024');
                           } else {
-                            year.remove('2023');
+                            year.remove('2024');
                           }
                         }),
                   ],

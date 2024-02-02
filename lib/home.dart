@@ -28,64 +28,82 @@ class _HomeState extends State<Home> {
       return projects.snapshots();
     } else {
       if (projectTypology.isNotEmpty && status.isNotEmpty && year.isNotEmpty) {
-        // setState(() {});
+        debugPrint('one');
         final db = FirebaseFirestore.instance;
         final projects = db
             .collection('projects')
             .where(
               'project typology',
-              arrayContainsAny: projectTypology,
+              whereIn: projectTypology,
             )
-            .where('status', arrayContainsAny: status)
-            .where('year', arrayContainsAny: year);
+            .where('status', whereIn: status)
+            .where('year', whereIn: year);
         debugPrint(projectTypology.toString());
         return projects.snapshots();
       }
       if (projectTypology.isNotEmpty && status.isNotEmpty) {
+        debugPrint('two');
         final db = FirebaseFirestore.instance;
         final projects = db
             .collection('projects')
-            .where('project typology', arrayContainsAny: projectTypology)
-            .where('status', arrayContainsAny: status);
+            .where('project typology', whereIn: projectTypology)
+            .where('status', whereIn: status);
 
         return projects.snapshots();
       }
       if (projectTypology.isNotEmpty && year.isNotEmpty) {
+        debugPrint('three');
         final db = FirebaseFirestore.instance;
         final projects = db
             .collection('projects')
-            .where('project typology', arrayContainsAny: projectTypology)
-            .where('year', arrayContainsAny: year);
+            .where('project typology', whereIn: projectTypology)
+            .where('year', whereIn: year);
 
         return projects.snapshots();
       }
       if (status.isNotEmpty && year.isNotEmpty) {
+        debugPrint('four');
         final db = FirebaseFirestore.instance;
         final projects = db
             .collection('projects')
-            .where('status', arrayContainsAny: status)
-            .where('year', arrayContainsAny: year);
+            .where('status', whereIn: status)
+            .get()
+            .then((querySnapshot) {
+          List filteredList = querySnapshot.docs
+              .where((document) => document['year'].any(year))
+              .toList();
+        });
 
-        return projects.snapshots();
+        return projects;
       }
       if (projectTypology.isNotEmpty) {
+        debugPrint('five');
         final db = FirebaseFirestore.instance;
         final projects = db
             .collection('projects')
-            .where('project typology', arrayContainsAny: projectTypology);
+            .where('project typology', whereIn: projectTypology);
         return projects.snapshots();
       }
       if (status.isNotEmpty) {
+        debugPrint('six');
         final db = FirebaseFirestore.instance;
         final projects =
-            db.collection('projects').where('status', arrayContainsAny: status);
+            db.collection('projects').where('status', whereIn: status);
+
+        return projects.snapshots();
+      }
+      if (projectTypology.isEmpty && status.isEmpty && year.isEmpty) {
+        debugPrint('seven');
+        setState(() {});
+        final db = FirebaseFirestore.instance;
+        final projects = db.collection('projects');
 
         return projects.snapshots();
       }
       {
+        debugPrint('eight');
         final db = FirebaseFirestore.instance;
-        final projects =
-            db.collection('projects').where('year', arrayContainsAny: year);
+        final projects = db.collection('projects').where('year', whereIn: year);
 
         return projects.snapshots();
       }
@@ -131,6 +149,15 @@ class _HomeState extends State<Home> {
                                               await showTopModalSheet<Map?>(
                                                   context, const TopModal());
                                           debugPrint(value.toString());
+                                          if (value != null) {
+                                            setState(() {
+                                              projectTypology =
+                                                  value['project typology'];
+                                              status = value['status'];
+                                              year = value['year'];
+                                              isFiltered = true;
+                                            });
+                                          }
                                         }))
                               ]),
                             ),
