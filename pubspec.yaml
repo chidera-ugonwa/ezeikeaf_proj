@@ -39,6 +39,7 @@ dependencies:
   firebase_core: ^2.24.2
   cloud_firestore: ^4.14.0
   top_modal_sheet: ^2.0.1
+  rxdart: ^0.27.7
 
  
 

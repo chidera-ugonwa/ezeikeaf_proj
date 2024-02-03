@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-
+//import 'package:rxdart/rxdart.dart';
 import 'package:ezeikeaf_proj/top_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,17 +64,11 @@ class _HomeState extends State<Home> {
       if (status.isNotEmpty && year.isNotEmpty) {
         debugPrint('four');
         final db = FirebaseFirestore.instance;
-        final projects = db
-            .collection('projects')
-            .where('status', whereIn: status)
-            .get()
-            .then((querySnapshot) {
-          List filteredList = querySnapshot.docs
-              .where((document) => document['year'].any(year))
-              .toList();
-        });
+        final projects =
+            db.collection('projects').where('status', whereIn: status);
+        //  final second = db.collection('projects').where('year', whereIn: year);
 
-        return projects;
+        return projects.snapshots();
       }
       if (projectTypology.isNotEmpty) {
         debugPrint('five');
