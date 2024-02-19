@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-//import 'package:rxdart/rxdart.dart';
+//import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ezeikeaf_proj/top_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -112,100 +112,92 @@ class _HomeState extends State<Home> {
                 return const Center(child: Text('Loading...'));
               }
               var docs = snapshot.data!.docs;
-
-              return SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: GridView(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 1, childAspectRatio: 1.75),
-                    children: docs
-                        .map((doc) => GridTile(
-                              header: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Stack(children: [
-                                  const Text(
-                                    'ezikeaf',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 30),
-                                  ),
-                                  Positioned(
-                                      right: 10,
-                                      child: IconButton(
-                                          icon: const Icon(Icons.menu),
-                                          color: Colors.white,
-                                          onPressed: () async {
-                                            var value =
-                                                await showTopModalSheet<Map?>(
-                                                    context, const TopModal());
-                                            debugPrint(value.toString());
-                                            if (value != null) {
-                                              setState(() {
-                                                projectTypology =
-                                                    value['project typology'];
-                                                status = value['status'];
-                                                year = value['year'];
-                                                isFiltered = true;
-                                              });
-                                            }
-                                          }))
-                                ]),
-                              ),
-                              child: Stack(fit: StackFit.expand, children: [
-                                Positioned(
-                                  child: CarouselSlider.builder(
-                                    options: CarouselOptions(
-                                      aspectRatio: 1,
-                                      viewportFraction: 1,
-                                      enableInfiniteScroll: true,
-                                    ),
-                                    itemCount: doc['photoLink'].length,
-                                    itemBuilder:
-                                        (context, itemIndex, realIndex) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  doc['photoLink'][itemIndex],
-                                                ))),
-                                      );
-                                    },
-                                  ),
+              return GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1, childAspectRatio: 2),
+                  children: docs
+                      .map((doc) => GridTile(
+                            header: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Stack(children: [
+                                const Text(
+                                  'ezikeaf',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
                                 ),
                                 Positioned(
-                                    top: 200,
-                                    bottom: 200,
-                                    right: 200,
-                                    left: 200,
-                                    child: Center(
-                                        child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(doc['title'],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontSize: 30)),
-                                        Text(doc['location'],
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18)),
-                                        OutlinedButton(
-                                            onPressed: () {},
-                                            child: const Text('Learn More'))
-                                      ],
-                                    )))
+                                    right: 10,
+                                    child: IconButton(
+                                        icon: const Icon(Icons.menu),
+                                        color: Colors.white,
+                                        onPressed: () async {
+                                          var value =
+                                              await showTopModalSheet<Map?>(
+                                                  context, const TopModal());
+                                          debugPrint(value.toString());
+                                          if (value != null) {
+                                            setState(() {
+                                              projectTypology =
+                                                  value['project typology'];
+                                              status = value['status'];
+                                              year = value['year'];
+                                              isFiltered = true;
+                                            });
+                                          }
+                                        }))
                               ]),
-                            ))
-                        .toList()),
-              );
+                            ),
+                            child: Stack(fit: StackFit.passthrough, children: [
+                              Positioned(
+                                child: CarouselSlider.builder(
+                                  options: CarouselOptions(
+                                    aspectRatio: 1,
+                                    viewportFraction: 1,
+                                    enableInfiniteScroll: true,
+                                  ),
+                                  itemCount: doc['photoLink'].length,
+                                  itemBuilder: (context, itemIndex, realIndex) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                doc['photoLink'][itemIndex],
+                                              ))),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Positioned(
+                                  top: 200,
+                                  bottom: 200,
+                                  right: 200,
+                                  left: 200,
+                                  child: Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(doc['title'],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 30)),
+                                      Text(doc['location'],
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18)),
+                                      OutlinedButton(
+                                          onPressed: () {},
+                                          child: const Text('Learn More'))
+                                    ],
+                                  )))
+                            ]),
+                          ))
+                      .toList());
             }));
   }
 }

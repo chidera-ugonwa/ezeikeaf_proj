@@ -1,6 +1,7 @@
 import 'package:ezeikeaf_proj/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,17 +23,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ezikeaf',
-      theme: ThemeData(
-          primaryColor: Colors.black,
-          useMaterial3: true,
-          checkboxTheme: CheckboxThemeData(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25))),
-          outlinedButtonTheme: OutlinedButtonThemeData(
-              style: OutlinedButton.styleFrom(foregroundColor: Colors.black))),
-      home: const Home(),
-    );
+    return ResponsiveSizer(builder: (context, orientation, screenType) {
+      return MaterialApp(
+        title: 'ezikeaf',
+        theme: ThemeData(
+            primaryColor: Colors.black,
+            useMaterial3: true,
+            checkboxTheme: CheckboxThemeData(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25))),
+            outlinedButtonTheme: OutlinedButtonThemeData(
+                style:
+                    OutlinedButton.styleFrom(foregroundColor: Colors.black))),
+        home: const Home(),
+      );
+    });
   }
 }
