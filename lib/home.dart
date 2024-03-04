@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-//import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ezeikeaf_proj/top_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -114,18 +114,20 @@ class _HomeState extends State<Home> {
               var docs = snapshot.data!.docs;
               return GridView(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1, childAspectRatio: 2),
+                      crossAxisCount: 1,
+                      childAspectRatio:
+                          MediaQuery.of(context).size.aspectRatio),
                   children: docs
                       .map((doc) => GridTile(
                             header: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Stack(children: [
-                                const Text(
+                                Text(
                                   'ezikeaf',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 30),
+                                      fontSize: 25.sp),
                                 ),
                                 Positioned(
                                     right: 10,
@@ -149,11 +151,12 @@ class _HomeState extends State<Home> {
                                         }))
                               ]),
                             ),
-                            child: Stack(fit: StackFit.passthrough, children: [
+                            child: Stack(fit: StackFit.expand, children: [
                               Positioned(
                                 child: CarouselSlider.builder(
                                   options: CarouselOptions(
-                                    aspectRatio: 1,
+                                    aspectRatio:
+                                        MediaQuery.of(context).size.aspectRatio,
                                     viewportFraction: 1,
                                     enableInfiniteScroll: true,
                                   ),
@@ -171,10 +174,10 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               Positioned(
-                                  top: 200,
-                                  bottom: 200,
-                                  right: 200,
-                                  left: 200,
+                                  top: 20,
+                                  bottom: 20,
+                                  right: 20,
+                                  left: 20,
                                   child: Center(
                                       child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -182,14 +185,14 @@ class _HomeState extends State<Home> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(doc['title'],
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
-                                              fontSize: 30)),
+                                              fontSize: 20.sp)),
                                       Text(doc['location'],
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 18)),
+                                              fontSize: 18.sp)),
                                       OutlinedButton(
                                           onPressed: () {},
                                           child: const Text('Learn More'))
